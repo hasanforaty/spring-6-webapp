@@ -2,19 +2,35 @@ package guru.springframework.spring6webapp.domain;
 
 import jakarta.persistence.*;
 
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * @Entity mark it as a POJO for Database
+ */
 @Entity
 public class Author {
+    /**
+     * @Id any Entity need an Id
+     */
     @Id
+    /**
+     * Id is auto Generated
+     */
     @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Long id;
     private String firstName;
     private String lastName;
 
-    @ManyToMany(mappedBy = "authors")
+
+    /**
+     * relationship of this field is like :
+     *  Many Author have Many Book
+     */
+    @ManyToMany(mappedBy = "authors",fetch = FetchType.EAGER)
     private Set<Book> books=new HashSet<>();
 
     public Set<Book> getBooks() {

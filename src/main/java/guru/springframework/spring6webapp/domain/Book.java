@@ -2,6 +2,7 @@ package guru.springframework.spring6webapp.domain;
 
 import jakarta.persistence.*;
 
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -14,9 +15,28 @@ public class Book {
     private String title;
     private String isbn;
 
-    @ManyToMany
-    @JoinTable(name = "author book",joinColumns = @JoinColumn(name = "book_id"),inverseJoinColumns = @JoinColumn(name = "author_id"))
+
+
+    /**
+     * relationship of this field is like :
+     *  Many Book have Many Authors
+     */
+    @ManyToMany()
+    /**
+     * We added here information for JoinTable between Book and Author
+     */
+    @JoinTable(name = "author_book",joinColumns = @JoinColumn(name = "book_id"),inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors=new HashSet<>();
+    @ManyToOne
+    private Publisher publisher;
+
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
 
     public Set<Author> getAuthors() {
         return authors;

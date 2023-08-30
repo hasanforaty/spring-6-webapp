@@ -2,12 +2,17 @@ package guru.springframework.spring6webapp.bootstap;
 
 import guru.springframework.spring6webapp.domain.Author;
 import guru.springframework.spring6webapp.domain.Book;
+import guru.springframework.spring6webapp.domain.Publisher;
 import guru.springframework.spring6webapp.repositories.AuthorRepository;
 import guru.springframework.spring6webapp.repositories.BookRepository;
 import guru.springframework.spring6webapp.repositories.PublisherRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+
+/**
+ * CommandLineRunner with @Component make sure that the run method (Override) run every time server is going to bring up
+ */
 @Component
 public class BootStrapData implements CommandLineRunner {
 
@@ -44,14 +49,25 @@ public class BootStrapData implements CommandLineRunner {
         Author roalingSaved = authorRepository.save(roaling);
         Book harryPotterSaved = bookRepository.save(harryPotter);
 
-        ericSaved.getBooks().add(dddSaved);
-//        dddSaved.getAuthors().add(ericSaved);
-        roalingSaved.getBooks().add(harryPotterSaved);
 
-        Author response = authorRepository.save(ericSaved);
-//        bookRepository.save(dddSaved);
+        Publisher publisher =new Publisher();
+        publisher.setPublishName("My Publisher");
+        publisher.setAddress("123 Main");
+        Publisher savedPublisher = publisherRepository.save(publisher);
+        dddSaved.setPublisher(savedPublisher);
+        harryPotterSaved.setPublisher(savedPublisher);
+
+
+        ericSaved.getBooks().add(dddSaved);
+        dddSaved.getAuthors().add(ericSaved);
+        roalingSaved.getBooks().add(harryPotterSaved);
+        harryPotterSaved.getAuthors().add(roalingSaved);
+
+        authorRepository.save(ericSaved);
         authorRepository.save(roalingSaved);
-        System.out.println(ericSaved);
+        bookRepository.save(dddSaved);
+        bookRepository.save(harryPotterSaved);
+
         System.out.println("In bootStrap");
         System.out.println("Author Count : "+authorRepository.count());
         System.out.println("book count : "+bookRepository.count());
